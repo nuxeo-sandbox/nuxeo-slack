@@ -15,8 +15,6 @@ mvn clean install
 * Go to https://api.slack.com/apps
 * Create a new app
 * Open the **OAuth & Permissions** menu
-  * Click on install to workspace 
-  * Copy the `Bot User OAuth Token`
   * Add the following scopes 
     * channels:read 
     * chat:write 
@@ -26,6 +24,8 @@ mvn clean install
     * mpim:write
     * users:read
     * users:read.email
+* Click on the **Install to Workplace** button (Permissions need to be set to be able to install the app)
+* Copy the generated `Bot User OAuth Token`
   
 # Nuxeo Configuration
 
