@@ -1,6 +1,6 @@
 <!-- See documentation at http://doc.nuxeo.com/x/HgIz -->
 <package type="addon" name="nuxeo-slack" version="@VERSION@">
-  <title>Nuxeo slack</title>
+  <title>Nuxeo Slack Integration</title>
   <description>
     <p>This package provides an integration between the Nuxeo Platform and Slack</p>
   </description>
