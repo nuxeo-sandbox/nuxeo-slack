@@ -15,6 +15,7 @@ mvn clean install
 * Go to https://api.slack.com/apps
 * Create a new app
 * Open the **OAuth & Permissions** menu
+  * Click on install to workspace 
   * Copy the `Bot User OAuth Token`
   * Add the following scopes 
     * channels:read 
