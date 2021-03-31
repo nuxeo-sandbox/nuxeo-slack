@@ -36,7 +36,7 @@ nuxeo.slack.token=<Bot User OAuth Token>
 
 # Features
 
-This plugin contains an automation operation to post messages on Slack
+This plugin contains an [automation operation](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/nuxeo-slack-core/src/main/java/org/nuxeo/labs/slack/automation/SendSlackNotificationOp.java) to post messages on Slack
 
 # Known limitations
 
