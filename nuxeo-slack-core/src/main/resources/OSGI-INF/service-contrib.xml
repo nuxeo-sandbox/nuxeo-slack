@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.labs.slack.service.SlackService">
+
+  <implementation class="org.nuxeo.labs.slack.service.SlackServiceImpl" />
+
+  <service>
+    <provide interface="org.nuxeo.labs.slack.service.SlackService" />
+  </service>
+
+</component>
