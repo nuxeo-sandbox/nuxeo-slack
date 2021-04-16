@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.labs.slack.operation">
 
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent" point="contextHelpers">
+    <contextHelper id="SlackUtils" class="org.nuxeo.labs.slack.automation.SlackFunctions" />
+  </extension>
+
   <extension point="operations" target="org.nuxeo.ecm.core.operation.OperationServiceComponent">
     <operation class="org.nuxeo.labs.slack.automation.SendSlackNotificationOp"/>
     <operation class="org.nuxeo.labs.slack.automation.UploadFileOp"/>

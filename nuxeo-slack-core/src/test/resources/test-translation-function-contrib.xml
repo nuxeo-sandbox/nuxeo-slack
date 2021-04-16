@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.labs.slack.automation.test.translation">
+    <extension target="org.nuxeo.automation.scripting.internals.AutomationScriptingComponent" point="operation">
+
+        <scriptedOperation id="javascript.test_translation">
+            <inputType>void</inputType>
+            <outputType>string</outputType>
+            <category>javascript</category>
+            <description></description>
+            <script><![CDATA[function run(input, params) {
+                  return SlackUtils.getTranslation("test.key","en-US");
+             }]]>
+            </script>
+        </scriptedOperation>
+
+    </extension>
+</component>
