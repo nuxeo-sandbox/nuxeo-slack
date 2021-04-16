@@ -25,6 +25,7 @@ mvn clean install
     * mpim:write
     * users:read
     * users:read.email
+    * files:write
   
 # Nuxeo Configuration
 
