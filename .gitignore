@@ -31,3 +31,4 @@ bin/
 *~gen
 local.dev.conf
 nuxeo-slack-docker/nuxeo_conf/local.dev.conf
+nashorn_code_cache/

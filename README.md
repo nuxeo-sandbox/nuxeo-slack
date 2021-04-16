@@ -14,6 +14,7 @@ mvn clean install
 
 * Go to https://api.slack.com/apps
 * Create a new app
+* Copy the `Bot User OAuth Token`
 * Open the **OAuth & Permissions** menu
   * Add the following scopes 
     * channels:read 
@@ -24,8 +25,6 @@ mvn clean install
     * mpim:write
     * users:read
     * users:read.email
-* Click on the **Install to Workplace** button (Permissions need to be set to be able to install the app)
-* Copy the generated `Bot User OAuth Token`
   
 # Nuxeo Configuration
 
@@ -37,12 +36,19 @@ nuxeo.slack.token=<Bot User OAuth Token>
 
 # Features
 
-This plugin contains an [automation operation](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/nuxeo-slack-core/src/main/java/org/nuxeo/labs/slack/automation/SendSlackNotificationOp.java) to post messages on Slack. To access the automation operation, you need to add the **Nuxeo Slack Integration** package in the **Application Definition** menu of your Nuxeo Studio project. The automation operation is visible in the `Notification` category.
+This plugin contains two automation operations.
 
-The operation takes three parameters:
+## Post message
+
+The [Notification.SendSlackNotification](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/nuxeo-slack-core/src/main/java/org/nuxeo/labs/slack/automation/SendSlackNotificationOp.java) operation takes three parameters:
 * `channel`: the channel name where to post. Ignored if the nuxeoUsername parameter is used
 * `nuxeoUsernames`: a list of nuxeo usernames. For each user, the email address must be set in the user profile in Nuxeo and must be the same as the user's email in the target slack workspace
 * `message`: the message to post
+* `blocks`: json string containing a message built with the [Block Kit UI framework](https://api.slack.com/block-kit)
+
+## Upload File
+
+The [Slack.UploadFile](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/nuxeo-slack-core/src/main/java/org/nuxeo/labs/slack/automation/UploadFileOp.java) takes a blob as the input and returns a String Blob containing a [slack file object](https://api.slack.com/types/file)
 
 # Known limitations
 This plugin is a work in progress.

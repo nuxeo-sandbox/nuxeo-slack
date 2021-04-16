@@ -20,6 +20,7 @@
 package org.nuxeo.labs.slack.service;
 
 import com.slack.api.Slack;
+import org.nuxeo.ecm.core.api.Blob;
 
 import java.util.List;
 
@@ -35,8 +36,9 @@ public interface SlackService {
      * Send the message to the channel
      * @param channel
      * @param message
+     * @param blocks
      */
-    void sendMessageToChannel(String channel, String message);
+    void sendMessageToChannel(String channel, String message, String blocks);
 
     /**
      *
@@ -56,13 +58,22 @@ public interface SlackService {
      *
      * @param slackUserId
      * @param message
+     * @param blocks
      */
-    void sendMessageToUser(String slackUserId, String message);
+    void sendMessageToUser(String slackUserId, String message, String blocks);
 
     /**
      *
      * @param slackUserIds
      * @param message
+     * @param blocks
      */
-    void sendMessageToUsers(List<String> slackUserIds, String message);
+    void sendMessageToUsers(List<String> slackUserIds, String message, String blocks);
+
+    /**
+     * Upload a file to slack
+     * @param blob
+     * @return the a slack File object
+     */
+    com.slack.api.model.File uploadFile(Blob blob);
 }

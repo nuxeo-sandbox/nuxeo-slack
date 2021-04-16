@@ -59,6 +59,9 @@ public class SendSlackNotificationOp {
     @Param(name = "message")
     protected String message;
 
+    @Param(name = "blocks", required = false)
+    protected String blocks;
+
     @OperationMethod
     public void run() {
         if (!nuxeoUsernames.isEmpty()) {
@@ -66,9 +69,9 @@ public class SendSlackNotificationOp {
                     username -> userManager.getPrincipal(username).getEmail()
             ).collect(Collectors.toList());
             List<String> slackIds = slackService.getSlackUserIds(emails);
-            slackService.sendMessageToUsers(slackIds, message);
+            slackService.sendMessageToUsers(slackIds, message, blocks);
         } else if (StringUtils.isNotEmpty(channel)) {
-            slackService.sendMessageToChannel(channel, message);
+            slackService.sendMessageToChannel(channel, message, blocks);
         }
     }
 }

@@ -37,6 +37,15 @@ public class SlackFeature implements RunnerFeature {
 
     public static final String TEST_PUBLIC_CHANNEL = "general";
     public static final String TEST_MESSAGE = "Hello! This is Nuxeo Automation";
+    public static final String TEST_BLOCKS = "" +
+            "   [{\n" +
+            "      \"type\":\"section\",\n" +
+            "      \"text\":{\n" +
+            "         \"type\":\"mrkdwn\",\n" +
+            "         \"text\":\"Hello, Assistant to the Regional Manager Dwight! *Michael Scott* wants to know where you'd like to take the Paper Company investors to dinner tonight.\\n\\n *Please select a restaurant:*\"\n" +
+            "      }\n" +
+            "   }\n" +
+            "]";
 
     @Override
     public void beforeSetup(FeaturesRunner runner, FrameworkMethod method, Object test) {

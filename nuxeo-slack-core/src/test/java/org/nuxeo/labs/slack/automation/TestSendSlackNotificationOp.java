@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.nuxeo.labs.slack.SlackFeature.TEST_BLOCKS;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_MESSAGE;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_PUBLIC_CHANNEL;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_USER_NAME;
@@ -64,11 +65,21 @@ public class TestSendSlackNotificationOp {
     }
 
     @Test
-    public void sendNotificationToChannel() throws OperationException {
+    public void sendSimpleMessageToChannel() throws OperationException {
         OperationContext ctx = new OperationContext(session);
         Map<String, Object> params = new HashMap<>();
         params.put("channel", TEST_PUBLIC_CHANNEL);
         params.put("message",TEST_MESSAGE);
+        automationService.run(ctx, SendSlackNotificationOp.ID, params);
+    }
+
+    @Test
+    public void sendBlocksToChannel() throws OperationException {
+        OperationContext ctx = new OperationContext(session);
+        Map<String, Object> params = new HashMap<>();
+        params.put("channel", TEST_PUBLIC_CHANNEL);
+        params.put("message",TEST_MESSAGE);
+        params.put("blocks",TEST_BLOCKS);
         automationService.run(ctx, SendSlackNotificationOp.ID, params);
     }
 

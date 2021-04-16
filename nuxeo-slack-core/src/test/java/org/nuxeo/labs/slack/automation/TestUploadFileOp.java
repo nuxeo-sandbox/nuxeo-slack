@@ -17,16 +17,23 @@
  *     Michael Vachette
  */
 
-package org.nuxeo.labs.slack.service;
+package org.nuxeo.labs.slack.automation;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.Assert;
+import org.json.JSONObject;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.automation.AutomationService;
+import org.nuxeo.ecm.automation.OperationContext;
+import org.nuxeo.ecm.automation.OperationException;
+import org.nuxeo.ecm.automation.test.AutomationFeature;
+import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
-import org.nuxeo.ecm.platform.test.PlatformFeature;
+import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
+import org.nuxeo.ecm.core.test.annotations.Granularity;
+import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.labs.slack.SlackFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
@@ -34,20 +41,23 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
-import static org.nuxeo.labs.slack.SlackFeature.TEST_BLOCKS;
-import static org.nuxeo.labs.slack.SlackFeature.TEST_MESSAGE;
-import static org.nuxeo.labs.slack.SlackFeature.TEST_PUBLIC_CHANNEL;
-import static org.nuxeo.labs.slack.SlackFeature.TEST_USER_EMAIL;
 
 @RunWith(FeaturesRunner.class)
-@Features({PlatformFeature.class, SlackFeature.class})
+@Features({AutomationFeature.class, SlackFeature.class})
+@RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 @Deploy("org.nuxeo.labs.slack.core")
-public class TestSlackService {
+public class TestUploadFileOp {
 
     @Inject
-    protected SlackService slackservice;
+    protected CoreSession session;
+
+    @Inject
+    protected AutomationService automationService;
 
     @Before
     public void tokenIsConfigured() {
@@ -55,38 +65,16 @@ public class TestSlackService {
     }
 
     @Test
-    public void testService() {
-        assertNotNull(slackservice);
-    }
-
-    @Test
-    public void testSendMessageToPublicChannel() {
-        slackservice.sendMessageToChannel(TEST_PUBLIC_CHANNEL, TEST_MESSAGE, null);
-    }
-
-    @Test
-    public void testSendBlockToPublicChannel() {
-        slackservice.sendMessageToChannel(TEST_PUBLIC_CHANNEL, TEST_MESSAGE, TEST_BLOCKS);
-    }
-
-    @Test
-    public void testGetSlackUserId() {
-        String userId = slackservice.getSlackUserId(TEST_USER_EMAIL);
-        Assert.assertTrue(StringUtils.isNotEmpty(userId));
-    }
-
-    @Test
-    public void testSendMessageToUser() {
-        String userId = slackservice.getSlackUserId(TEST_USER_EMAIL);
-        slackservice.sendMessageToChannel(userId, TEST_MESSAGE, null);
-    }
-
-    @Test
-    public void testUploadFile() {
+    public void testUploadFile() throws OperationException, IOException {
         FileBlob blob = new FileBlob(new File(getClass().getResource("/files/small.jpg").getPath()));
         blob.setFilename("small.jpg");
-        com.slack.api.model.File slackFile = slackservice.uploadFile(blob);
-        assertNotNull(slackFile);
+        OperationContext ctx = new OperationContext(session);
+        ctx.setInput(blob);
+        Map<String, Object> params = new HashMap<>();
+        Blob result = (Blob) automationService.run(ctx, UploadFileOp.ID, params);
+        assertNotNull(result);
+        JSONObject object = new JSONObject(result.getString());
+        assertNotNull(object);
     }
 
 }

@@ -23,13 +23,16 @@ import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import com.slack.api.methods.response.conversations.ConversationsOpenResponse;
+import com.slack.api.methods.response.files.FilesUploadResponse;
 import com.slack.api.methods.response.users.UsersLookupByEmailResponse;
+import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.DefaultComponent;
 import org.nuxeo.runtime.model.Extension;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,12 +129,13 @@ public class SlackServiceImpl extends DefaultComponent implements SlackService {
     }
 
     @Override
-    public void sendMessageToChannel(String channel, String message) {
+    public void sendMessageToChannel(String channel, String message, String blocks) {
         Slack slack = getSlackClient();
         try {
             ChatPostMessageResponse response = slack.methods(getToken()).chatPostMessage(req -> req
                     .channel(channel)
-                    .text(message));
+                    .text(message)
+                    .blocksAsString(blocks));
             if (!response.isOk()) {
                 throw new NuxeoException(response.getError());
             }
@@ -163,17 +167,17 @@ public class SlackServiceImpl extends DefaultComponent implements SlackService {
     }
 
     @Override
-    public void sendMessageToUser(String slackUserId, String message) {
-        sendMessageToChannel(slackUserId, message);
+    public void sendMessageToUser(String slackUserId, String message, String blocks) {
+        sendMessageToChannel(slackUserId, message, blocks);
     }
 
     @Override
-    public void sendMessageToUsers(List<String> slackUserIds, String message) {
+    public void sendMessageToUsers(List<String> slackUserIds, String message, String blocks) {
         Slack slack = getSlackClient();
         try {
             ConversationsOpenResponse conversation = slack.methods(getToken()).conversationsOpen(req -> req.users(slackUserIds));
             if (conversation.isOk()) {
-                sendMessageToChannel(conversation.getChannel().getId(), message);
+                sendMessageToChannel(conversation.getChannel().getId(), message, blocks);
             } else {
                 throw new NuxeoException("Couldn't open conversation "+conversation.getError());
             }
@@ -181,4 +185,21 @@ public class SlackServiceImpl extends DefaultComponent implements SlackService {
             throw new NuxeoException(e);
         }
     }
+
+    @Override
+    public com.slack.api.model.File uploadFile(Blob blob) {
+        Slack slack = getSlackClient();
+        try {
+            File file = blob.getCloseableFile().getFile();
+            FilesUploadResponse response = slack.methods(getToken()).filesUpload(req -> req.file(file).filename(blob.getFilename()));
+            if (response.isOk()) {
+                return response.getFile();
+            } else {
+                throw new NuxeoException("Couldn't upload file "+response.getError());
+            }
+        } catch (IOException | SlackApiException e) {
+            throw new NuxeoException(e);
+        }
+    }
+
 }
