@@ -51,6 +51,9 @@ The [Notification.SendSlackNotification](https://github.com/nuxeo-sandbox/nuxeo-
 
 The [Slack.UploadFile](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/nuxeo-slack-core/src/main/java/org/nuxeo/labs/slack/automation/UploadFileOp.java) takes a blob as the input and returns a String Blob containing a [slack file object](https://api.slack.com/types/file)
 
+# Samples
+* [workflow task notification](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/documentation/sample-automation-script.js), send a slack notification on the workflowTaskAssigned event
+
 # Known limitations
 This plugin is a work in progress.
 
