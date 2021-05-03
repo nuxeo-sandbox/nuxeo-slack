@@ -19,6 +19,7 @@
 
 package org.nuxeo.labs.slack.service;
 
+import com.slack.api.app_backend.SlackSignature;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -28,7 +29,6 @@ import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
 import org.nuxeo.labs.slack.SlackFeature;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import java.io.File;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_BLOCKS;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_MESSAGE;
 import static org.nuxeo.labs.slack.SlackFeature.TEST_PUBLIC_CHANNEL;
@@ -43,7 +44,6 @@ import static org.nuxeo.labs.slack.SlackFeature.TEST_USER_EMAIL;
 
 @RunWith(FeaturesRunner.class)
 @Features({PlatformFeature.class, SlackFeature.class})
-@Deploy("org.nuxeo.labs.slack.core")
 public class TestSlackService {
 
     @Inject
@@ -87,6 +87,16 @@ public class TestSlackService {
         blob.setFilename("small.jpg");
         com.slack.api.model.File slackFile = slackservice.uploadFile(blob);
         assertNotNull(slackFile);
+    }
+
+    @Test
+    public void testIsValidRequest() {
+        String nowTimeStamp = ""+System.currentTimeMillis();
+        String secret = SlackFeature.getSigningSecret();
+        String body = "Yo This is Slack!!";
+        SlackSignature.Generator generator = new SlackSignature.Generator(secret);
+        String signature = generator.generate(nowTimeStamp,body);
+        assertTrue(slackservice.isValidRequest(body,nowTimeStamp,signature));
     }
 
 }

@@ -76,4 +76,22 @@ public interface SlackService {
      * @return the a slack File object
      */
     com.slack.api.model.File uploadFile(Blob blob);
+
+    /**
+     *
+     * @param body
+     * @param timestamp
+     * @param signature
+     * @return true is the request siganture is valid
+     */
+    boolean isValidRequest(String body, String timestamp, String signature);
+
+
+    /**
+     * Process the message from slack
+     * @param body
+     */
+    void processSlackMessage(String body);
+
+
 }

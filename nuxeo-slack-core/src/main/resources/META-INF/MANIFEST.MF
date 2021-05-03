@@ -5,6 +5,8 @@ Bundle-Vendor: org.nuxeo.labs.slack
 Bundle-Version: 1.0.0
 Bundle-Name: nuxeo-slack-core
 Bundle-ManifestVersion: 2
+Nuxeo-WebModule: org.nuxeo.ecm.webengine.app.WebEngineModule;name=slack;extends=base;headless=true;package=org/nuxeo/labs/slack/rest
 Bundle-SymbolicName: org.nuxeo.labs.slack.core;singleton=true
 Nuxeo-Component: OSGI-INF/service-contrib.xml,
- OSGI-INF/operation-contrib.xml
+ OSGI-INF/operation-contrib.xml,
+ OSGI-INF/auth-contrib.xml

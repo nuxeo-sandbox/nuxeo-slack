@@ -35,7 +35,6 @@ import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.labs.slack.SlackFeature;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
@@ -50,7 +49,6 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(FeaturesRunner.class)
 @Features({AutomationFeature.class, SlackFeature.class})
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
-@Deploy("org.nuxeo.labs.slack.core")
 public class TestUploadFileOp {
 
     @Inject

@@ -25,11 +25,14 @@ import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.platform.usermanager.NuxeoPrincipalImpl;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.RunnerFeature;
 
+import static org.nuxeo.labs.slack.service.SlackServiceImpl.NUXEO_SLACK_SIGNING_SECRET_PROPERTY;
 import static org.nuxeo.labs.slack.service.SlackServiceImpl.NUXEO_SLACK_TOKEN_PROPERTY;
 
+@Deploy("org.nuxeo.labs.slack.core")
 public class SlackFeature implements RunnerFeature {
 
     public static final String TEST_USER_NAME = "testUser";
@@ -57,10 +60,15 @@ public class SlackFeature implements RunnerFeature {
 
     @Override
     public void beforeRun(FeaturesRunner runner) {
-        Framework.getProperties().setProperty(NUXEO_SLACK_TOKEN_PROPERTY,System.getProperty("nuxeo.slack.token"));
+        Framework.getProperties().setProperty(NUXEO_SLACK_TOKEN_PROPERTY,System.getProperty("nuxeo.slack.token",""));
+        Framework.getProperties().setProperty(NUXEO_SLACK_SIGNING_SECRET_PROPERTY,"abdcdefgh");
     }
 
     public static boolean tokenIsConfigured() {
         return StringUtils.isNotEmpty(Framework.getProperty(NUXEO_SLACK_TOKEN_PROPERTY));
+    }
+
+    public static String getSigningSecret() {
+        return Framework.getProperty(NUXEO_SLACK_SIGNING_SECRET_PROPERTY);
     }
 }

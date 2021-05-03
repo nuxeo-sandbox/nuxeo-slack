@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.labs.slack.auth">
+    <extension point="openUrl"
+               target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService">
+        <openUrl name="SlackEndpoint">
+            <grantPattern>/nuxeo/site/slack</grantPattern>
+        </openUrl>
+    </extension>
+</component>

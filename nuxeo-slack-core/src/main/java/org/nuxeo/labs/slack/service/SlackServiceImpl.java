@@ -20,6 +20,7 @@
 package org.nuxeo.labs.slack.service;
 
 import com.slack.api.Slack;
+import com.slack.api.app_backend.SlackSignature;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import com.slack.api.methods.response.conversations.ConversationsOpenResponse;
@@ -27,6 +28,8 @@ import com.slack.api.methods.response.files.FilesUploadResponse;
 import com.slack.api.methods.response.users.UsersLookupByEmailResponse;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.NuxeoException;
+import org.nuxeo.ecm.core.event.EventService;
+import org.nuxeo.ecm.core.event.impl.EventContextImpl;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -40,6 +43,9 @@ import java.util.stream.Collectors;
 public class SlackServiceImpl extends DefaultComponent implements SlackService {
 
     public static final String NUXEO_SLACK_TOKEN_PROPERTY = "nuxeo.slack.token";
+    public static final String NUXEO_SLACK_SIGNING_SECRET_PROPERTY = "nuxeo.slack.signingsecret";
+    public static final String NUXEO_SLACK_MESSAGE_EVENT = "slackMessageReceived";
+    public static final String NUXEO_SLACK_MESSAGE_EVENT_PROPERTY = "payload";
 
     /**
      * volatile on purpose to allow for the double-checked locking idiom
@@ -200,6 +206,21 @@ public class SlackServiceImpl extends DefaultComponent implements SlackService {
         } catch (IOException | SlackApiException e) {
             throw new NuxeoException(e);
         }
+    }
+
+    @Override
+    public boolean isValidRequest(String body, String timestamp, String signature) {
+        SlackSignature.Verifier verifier = new SlackSignature.Verifier(
+                new SlackSignature.Generator(Framework.getProperty(NUXEO_SLACK_SIGNING_SECRET_PROPERTY)));
+        return verifier.isValid(timestamp,body,signature);
+    }
+
+    @Override
+    public void processSlackMessage(String body) {
+        EventContextImpl ctx = new EventContextImpl();
+        ctx.setProperty(NUXEO_SLACK_MESSAGE_EVENT_PROPERTY,body);
+        EventService es = Framework.getService(EventService.class);
+        es.fireEvent(NUXEO_SLACK_MESSAGE_EVENT, ctx);
     }
 
 }
