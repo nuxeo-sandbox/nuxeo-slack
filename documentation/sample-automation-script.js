@@ -2,6 +2,7 @@ function run(input, params) {
 
     if (!Env.getProperty('nuxeo.slack.token')) {
         Console.log("Slack Token is not configured. Skipping Notification");
+        return input;
     }
 
     // get text variables
