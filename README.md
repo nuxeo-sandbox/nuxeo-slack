@@ -54,6 +54,27 @@ The [Slack.UploadFile](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/
 # Samples
 * [workflow task notification](https://github.com/nuxeo-sandbox/nuxeo-slack/blob/master/documentation/sample-automation-script.js), send a slack notification on the workflowTaskAssigned event
 
+# Test
+Assuming the docker image was built, set the app bot token in conf.d/docker.conf
+
+```bash
+docker compose up -d
+```
+
+Use the following curl command to test that the integration is working correctly
+
+```bash
+curl --location --request POST 'http://localhost:8080/nuxeo/site/api/v1/automation/Notification.SendSlackNotification' \
+--header 'Authorization: Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"params": {
+"channel":"general",
+"message":"Salut!!!"
+}
+}'
+```
+
 # Known limitations
 This plugin is a work in progress.
 

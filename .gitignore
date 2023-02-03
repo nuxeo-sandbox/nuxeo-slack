@@ -32,3 +32,5 @@ bin/
 local.dev.conf
 nuxeo-slack-docker/nuxeo_conf/local.dev.conf
 nashorn_code_cache/
+.env
+conf.d/slack.conf
