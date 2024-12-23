@@ -27,7 +27,7 @@ import java.util.Locale;
 public class SlackFunctions implements ContextHelper {
 
     public String getTranslation(String key, String locale) {
-        return I18NUtils.getMessageString("messages",key,new Object[0], new Locale(locale));
+        return I18NUtils.getMessageString("messages",key,new Object[0], Locale.of(locale));
     }
 
 }
