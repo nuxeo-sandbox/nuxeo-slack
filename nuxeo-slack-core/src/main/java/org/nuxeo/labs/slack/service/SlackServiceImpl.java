@@ -146,7 +146,7 @@ public class SlackServiceImpl extends DefaultComponent implements SlackService {
 
     @Override
     public String getSlackUserId(String email) {
-        return getSlackUserIds(List.of(email)).get(0);
+        return getSlackUserIds(List.of(email)).getFirst();
     }
 
     @Override
