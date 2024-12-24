@@ -52,8 +52,15 @@ public class TestSlackFunctions {
     protected AutomationService automationService;
 
     @Test
-    @Deploy("org.nuxeo.labs.slack.core:test-translation-function-contrib.xml")
     public void testGetTranslation() throws OperationException {
+        SlackFunctions fn = new SlackFunctions();
+        String translation = fn.getTranslation("test.key","en_US");
+        assertEquals("Allo",translation);
+    }
+
+    @Test
+    @Deploy("org.nuxeo.labs.slack.core:test-translation-function-contrib.xml")
+    public void testGetTranslationInAutomation() throws OperationException {
         OperationContext ctx = new OperationContext(session);
         Map<String, Object> params = new HashMap<>();
         String translation = (String) automationService.run(ctx, "javascript.test_translation", params);
