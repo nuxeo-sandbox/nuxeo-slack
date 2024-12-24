@@ -17,6 +17,7 @@
     <nuxeo.target.version>2025.*</nuxeo.target.version>
     <skipDocker>false</skipDocker>
     <pushReleaseChanges>false</pushReleaseChanges>
+    <slack.sdk.version>1.44.2</slack.sdk.version>
   </properties>
   <modules>
     <module>nuxeo-slack-core</module>

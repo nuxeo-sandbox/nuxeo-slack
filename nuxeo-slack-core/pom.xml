@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.slack.api</groupId>
             <artifactId>slack-api-client</artifactId>
-            <version>1.30.0</version>
+            <version>${slack.sdk.version}</version>
         </dependency>
 
         <dependency>
