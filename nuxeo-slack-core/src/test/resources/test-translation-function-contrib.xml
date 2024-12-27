@@ -8,7 +8,7 @@
             <category>javascript</category>
             <description></description>
             <script><![CDATA[function run(input, params) {
-                  return SlackUtils.getTranslation("test.key","en_US");
+                  return SlackUtils.getTranslation("test.key","en");
              }]]>
             </script>
         </scriptedOperation>

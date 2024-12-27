@@ -54,7 +54,7 @@ public class TestSlackFunctions {
     @Test
     public void testGetTranslation() throws OperationException {
         SlackFunctions fn = new SlackFunctions();
-        String translation = fn.getTranslation("test.key","en_US");
+        String translation = fn.getTranslation("test.key","en");
         assertEquals("Allo",translation);
     }
 
